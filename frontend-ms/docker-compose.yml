@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+  integration:
+    image: minhi98/4006-frontend:latest
+    restart: always
+    environment:
+      WEB_CONCURRENCY: 1
+      SECRET_KEY: "test"
+      INTEGRATION_URL: 
+      
+    ports:
+      - 7998:8000

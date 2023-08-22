@@ -1,0 +1,78 @@
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/utils.html' import render_messages, render_icon %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>4006 Pet Store</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {{ bootstrap.load_css() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/base.css') }}">
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="h1 navbar-brand mb-0 mr-auto">
+                    {{ render_nav_item('index', '4006 Pet Store') }}
+                </ul>
+                <ul class="navbar-brand mb-0 mr-auto">
+                    {{ render_nav_item('index', 'Catalogue') }}
+                </ul>
+            </div>
+            <ul class="navbar-nav mb-0 mr-auto">
+                {{ render_form(base_search_form, method='POST') }}
+            </ul>
+            <ul class="navbar-nav mb-0 mr-auto">
+                <div class="dropdown">
+                    <button class="btn btn-dark" type="button" id="baseLogin" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: transparent !important; border-width:0px !important">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="large text-icon-black dark:text-icon-white text-false icon" id="avatar">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end p-4 text-muted border-dark" style="min-width: 15vw; max-width: 25vw;" aria-labelledby="baseLogin">                        
+                        {% if not user_details %}
+                            <li><h5>Guest</h5></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>{{ render_form(base_login_form, method='POST') }}</li>
+                            </br>
+                            <li><a href="{{url_for('userRegistration')}}" class="text-decoration-none text-reset">Register for an account</a></li>
+                        {% else %}
+                            <li><h5><a href="{{ url_for('user') }}" class="text-decoration-none text-reset">Your Profile - {{ user_details["username"] }}</a></h5></li>
+                            <li><a href="{{ url_for('basket') }}" class="text-decoration-none text-reset">Your Basket</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>{{ render_form(base_logout_form, method='POST') }}</li>
+                        {% endif %}
+                    </ul>
+                  </div>
+            </ul>
+        </div>
+    </nav>
+    
+
+    <main class="container">
+        {{ render_messages(container=False, dismissible=True, dismiss_animate=True) }}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="text-center">
+        {% block footer %}
+        <small> &copy; 2022-<script>
+                document.write(new Date().getFullYear())
+            </script> <a href="https://www.qub.ac.uk/">4006 Pet Store</a>
+        </small>
+        {% endblock %}
+    </footer>
+
+    {{ bootstrap.load_js() }}
+</body>
+
+</html>

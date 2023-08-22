@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{{index_header}}</h1>
+<hr class="divider">
+
+<script>document.title = document.title + " - Page {{ current_page }}"</script>
+
+<nav aria-label"Page navigation catalogue">
+  <ul class="pagination pagination-lg justify-content-center">
+    {% for i in num_of_pages %}
+        {% if i == current_page %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">{{i}}</span>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" type="hidden" href="{{ url_for('index', page=i) }}">{{i}}</a></li>
+        {% endif %}
+    {% endfor %}
+</nav>
+
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+    {% for k,v in catalogue_json.items() %}
+        <div class="col">
+        <div class="card border-dark mb-3 d-flex flex-column align-items-stretch">
+            <a href="{{ url_for('item', id=k) }}" class="text-decoration-none text-reset">
+                <img src="{{ v.get("metadata").get("images")[0] }}" class="card-img-top border-bottom border-dark img-fluid uniform-card-images">
+                <div class="card-body text-dark">
+                <h4 class="card-title  text-truncate" title="{{ v.get("name", "Placeholder") }}">{{ v.get("name", "Placeholder") }}</h5>
+                {% if v.get("price") is string %}
+                <p>{{v.get("price")}}</p>              
+                {% else %}
+                <p>{{"£{:,.2f}".format(v.get("price"))}}</p>              
+                {% endif %}       
+
+                {% if not user_details %}
+                <form action="" method="post">
+                    <button type="submit" class="btn btn-sm btn-outline-dark disabled me-1"">Add to Cart</button>
+                </form>
+                {% else %}
+                <form action="{{url_for('modifyCartItem', itemid=k, quantity=1)}}" method="post">
+                    <button type="submit" class="btn btn-sm btn-outline-dark me-1" name="csrf_token" value="{{ csrf_token() }}">Add to Cart</button>
+                </form>
+                {% endif %}
+            </a>
+        </div>
+        </div>
+        </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

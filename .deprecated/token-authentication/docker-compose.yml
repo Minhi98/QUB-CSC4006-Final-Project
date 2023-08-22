@@ -1,0 +1,30 @@
+version: '3.6'
+
+services:
+  database:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=authdb
+      - MYSQL_USER=4006
+      - MYSQL_PASSWORD=4006
+      - MYSQL_ROOT_PASSWORD=4006
+    ports:
+      - 3300:3306
+    volumes:
+      - /home/admin/4006/auth:/var/lib/mysql
+
+  token_auth:
+    image: minhi98/4006-token-authentication:latest
+    restart: always
+    environment:
+      - MYSQL_HOST=csc4006
+      - MYSQL_PORT=3300
+      - MYSQL_USER=root
+      - MYSQL_PASS=4006
+      - MYSQL_DB=authdb
+      - WEB_CONCURRENCY=1
+    ports:
+      - 8002:8000
+    depends_on:
+    - database

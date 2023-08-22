@@ -1,0 +1,31 @@
+version: '3.6'
+
+services:
+  database:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=cmsdb
+      - MYSQL_USER=4006
+      - MYSQL_PASSWORD=4006
+      - MYSQL_ROOT_PASSWORD=4006
+    ports:
+      - 3306:3306
+    volumes:
+      - /home/admin/4006/cms:/var/lib/mysql
+  
+  cms:
+    image: minhi98/4006-cms:latest
+    restart: always
+    environment:
+      - MYSQL_HOST=csc4006
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASS=4006
+      - MYSQL_DB=cmsdb
+      - POPULATE_EMPTY_DB=1
+      - WEB_CONCURRENCY=1
+    ports:
+      - 8001:8000
+    depends_on:
+    - database

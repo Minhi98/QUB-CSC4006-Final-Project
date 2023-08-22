@@ -1,0 +1,40 @@
+version: '3.6'
+
+volumes:
+  dbvolname:
+    external: true
+
+services:
+  database:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=<<DBNAME>>
+      - MYSQL_USER=4006
+      - MYSQL_PASSWORD=4006
+      - MYSQL_ROOT_PASSWORD=4006
+    ports:
+      - 3299:3306
+    # volumes:
+    #   - your_chosen_db_directory_here:/var/lib/mysql
+  
+  datastore:
+    image: minhi98/4006-datastore:latest
+    restart: always
+    environment:
+      - MYSQL_HOST=csc4006
+      - MYSQL_PORT=3299
+      - MYSQL_USER=root
+      - MYSQL_PASS=4006
+      - MYSQL_DB=<<DBNAME>>
+      - WEB_CONCURRENCY=1
+      - MAX_REQUESTS=5
+      - MAX_REQUESTS_JITTER=5
+      - TIMEOUT=15
+      - GRACEFUL_TIMEOUT=30
+      - SERVICE_TABLE=<<TABLE_NAME_HERE>>
+      - 'JSON_TABLE_MIN_SCHEMA={"test_field1": "VARCHAR(255) NOT NULL", "test_field2":"int"}'
+    ports:
+      - 8001:8000
+    depends_on:
+    - database

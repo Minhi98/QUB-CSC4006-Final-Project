@@ -1,0 +1,36 @@
+
+pre {
+    background: #ddd;
+    padding: 10px;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+footer {
+    margin: 20px;
+}
+
+.uniform-card-images {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+
+
+.basket-item-images {
+    width: 100%;
+    height: 5vw;
+    object-fit: cover;
+}
+
+.page-item.active .page-link {
+    color: #fff !important;
+    background: #000 !important;
+    border-color: #fff !important;
+}
+
+.pagination .page-link {
+    color:#000 !important;
+}

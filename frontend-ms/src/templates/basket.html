@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>document.title = document.title + " - Your Basket"</script>
+
+<div class="row">
+    <div class="col-6">
+        <h1>Your Basket</h1>
+    </div>
+    <div class="col-6">
+        {% if total_price > 0.00 %}
+        <form action="{{url_for('modifyCartItem', checkout=1)}}" method="post">
+            <button type="submit" class="float-end btn btn-lg btn-outline-success" name="csrf_token" value="{{ csrf_token() }}">Checkout</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+
+
+<hr class="divider">
+
+<div class="container">
+{% for id, data in basket_list.items() %}
+
+    <div class="row">
+        <div class="col-4">
+            <img class="basket-item-images" 
+            src="{{'https://via.placeholder.com/256.jpg' if data["data"]["metadata"]["images"][0] == "placeholder" else data["data"]["metadata"]["images"][0]}}"
+            href="{{url_for('item', id=id)}}" />
+        </div>
+        <div class="col-8">
+            <h5><a href="{{url_for('item', id=id)}}" class="text-decoration-none text-reset">{{data["data"]["name"]}}</a></h5>
+            <div class="row">
+                <div class="col-4">
+                    <p><b>Quantity:</b> {{data["quantity"]}}</p>
+                </div>
+                <div class="col-4">
+                    <p><b>Price per:</b> £{{"{:,.2f}".format(data["data"]["price"]|float)}}</p>
+                </div>
+                <div class="col-4">
+                    <p><b>Subtotal:</b> {{"£{:,.2f}".format(data["price_total"]|float)}}</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-8 btn-group">
+                    <form action="{{url_for('modifyCartItem', itemid=id, quantity=1)}}" method="post">
+                        <button type="submit" class="btn btn-sm btn-outline-dark me-1" name="csrf_token" value="{{ csrf_token() }}">+</button>
+                    </form>
+                    <form action="{{url_for('modifyCartItem', itemid=id, quantity=-1)}}" method="post">
+                        <button type="submit" class="btn btn-sm btn-outline-dark me-1" name="csrf_token" value="{{ csrf_token() }}">-</button>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <form action="{{url_for('modifyCartItem', itemid=id, quantity=0)}}" method="post">
+                        <button type="submit" class="btn btn-sm btn-outline-dark me-1" name="csrf_token" value="{{ csrf_token() }}">Remove</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="divider">
+
+{% endfor %}
+</div>
+
+<h4>Total Price: {{"£{:,.2f}".format(total_price)}}</h4>
+
+{% endblock %}

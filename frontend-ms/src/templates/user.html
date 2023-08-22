@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>document.title = document.title + " - Your Profile"</script>
+
+<h1>Your Profile</h1>
+<hr class="divider">
+
+<h4>Username</h4>
+<p>{{ profile["username"] }}</p>
+
+<h4>Email</h4>
+<p>{{ profile["email"] }}</p>
+
+<h4>Address</h4>
+<p>{{ profile["address"] }}</p>
+
+</br>
+<h1>Order History</h1>
+<hr class="divider">
+
+{% if order_history %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Order No.</th>
+        <th scope="col">Order</th>
+        <th scope="col">Note</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for k, v in order_history.items() %}
+        <tr>
+          <th scope="row">{{"{:07d}".format(k|int)}}</th>
+          <td>
+            {% for order_item_id, order_item_quantity in v["order_items"].items() %}
+                {{store_item_names[order_item_id]}} x{{"{:02d}".format(order_item_quantity|int)}}<br>
+            {% endfor %}
+          </td>
+          <td>{{v["order_note"]}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>You have no order history.</p>
+{% endif %}
+
+</br>
+<h1>Change Details</h1>
+<hr class="divider">
+{{ render_form(change_acc_form, method='POST') }}
+
+</br>
+<hr class="divider">
+{{ render_form(delete_acc_form, method='POST') }}
+
+{% endblock %}

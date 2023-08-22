@@ -1,0 +1,29 @@
+version: '3.6'
+
+services:
+  integration:
+    image: minhi98/4006-integration:latest
+    restart: always
+    environment:
+      WEB_CONCURRENCY: 2
+      JWT_SECRET: "test"
+      
+      AUTH_URL: 'auth.csc4006.minhi.net'
+      AUTH_HTTPS: "true"
+
+      USERS_HOST: 'users.csc4006.minhi.net'
+      USERS_HTTPS: "true"
+
+      JWT_HOST: 'jwt.csc4006.minhi.net'
+      JWT_HTTPS: "true"
+
+      STORE_INV_HOST: 'inv.csc4006.minhi.net'
+      STORE_INV_HTTPS: "true"
+
+      BASKETS_HOST: 'basket.csc4006.minhi.net'
+      BASKETS_HTTPS: "true"
+
+      ORDERS_HOST: 'orders.csc4006.minhi.net'
+      ORDERS_HTTPS: "true"
+    ports:
+      - 7999:8000

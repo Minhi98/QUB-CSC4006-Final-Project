@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script>document.title = document.title + " - Registration Form"</script>
+
+<h1>Customer Registration</h1>
+<hr class="divider">
+
+{{render_form(registration_form, method='POST')}}
+
+{% endblock %}
